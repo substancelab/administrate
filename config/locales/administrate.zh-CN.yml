@@ -6,6 +6,8 @@ zh-CN:
       destroy: 删除
       edit: 编辑
       show: 查看
+      new: 新建
+      back: 返回
     controller:
       create:
         success: "%{resource} 创建成功."
@@ -23,3 +25,6 @@ zh-CN:
         not_supported: HasOne 关系暂不支持.
     scopes:
       scopes: 过滤器
+    search:
+      clear: 清除搜索
+      label: 搜索 %{resource}

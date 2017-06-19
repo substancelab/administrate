@@ -4,6 +4,7 @@ module Administrate
 
     def index
       resources = search.run
+      resources = resources.includes(*resource_includes) if resource_includes.any?
       resources = order.apply(resources)
       resources = resources.page(params[:page]).per(records_per_page)
       page = Administrate::Page::Collection.new(
@@ -13,8 +14,8 @@ module Administrate
 
       render locals: {
         resources: resources,
-        search_term: search.term,
         page: page,
+        show_search_bar: show_search_bar?
       }
     end
 
@@ -74,11 +75,18 @@ module Administrate
 
     helper_method :nav_link_state
     def nav_link_state(resource)
-      if resource_name.to_s.pluralize == resource.to_s
-        :active
-      else
-        :inactive
+      resource_name.to_s.pluralize == resource.to_s ? :active : :inactive
+    end
+
+    helper_method :valid_action?
+    def valid_action?(name, resource = resource_class)
+      !!routes.detect do |controller, action|
+        controller == resource.to_s.underscore.pluralize && action == name.to_s
       end
+    end
+
+    def routes
+      @routes ||= Namespace.new(namespace).routes
     end
 
     def records_per_page
@@ -105,12 +113,13 @@ module Administrate
       resource_class.find(param)
     end
 
-    def resource_params
-      params.require(resource_name).permit(*permitted_attributes)
+    def resource_includes
+      dashboard.association_includes
     end
 
-    def permitted_attributes
-      dashboard.permitted_attributes
+    def resource_params
+      params.require(resource_class.model_name.param_key).
+        permit(dashboard.permitted_attributes)
     end
 
     delegate :resource_class, :resource_name, :namespace, to: :resource_resolver
@@ -127,6 +136,12 @@ module Administrate
         "administrate.controller.#{key}",
         resource: resource_resolver.resource_title,
       )
+    end
+
+    def show_search_bar?
+      dashboard.attribute_types_for(
+        dashboard.collection_attributes
+      ).any? { |_name, attribute| attribute.searchable? }
     end
   end
 end

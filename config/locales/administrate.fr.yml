@@ -6,6 +6,8 @@ fr:
       destroy: Supprimer
       edit: Modifier
       show: Détails
+      new: Création
+      back: Précédent
     controller:
       create:
         success: "%{resource} a été correctement créé(e)."
@@ -23,3 +25,6 @@ fr:
         not_supported: Les relations HasOne dans les formulaires ne sont pas supportées.
     scopes:
       scopes: Filtres
+    search:
+      clear: Effacer la recherche
+      label: Chercher %{resource}

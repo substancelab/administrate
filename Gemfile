@@ -1,20 +1,14 @@
 source 'https://rubygems.org'
 
-ruby "2.2.3"
-
 gemspec
 
 gem "administrate-field-image"
-gem "delayed_job_active_record"
-gem "high_voltage"
-gem "markdown-rails"
+gem "autoprefixer-rails"
+gem "faker"
 gem "pg"
 gem "redcarpet"
+gem "sentry-raven"
 gem "unicorn"
-
-group :development do
-  gem "web-console", ">= 2.1.3"
-end
 
 group :development, :test do
   gem "appraisal"
@@ -23,10 +17,9 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "factory_girl_rails"
-  gem "faker"
   gem "i18n-tasks"
   gem "pry-rails"
-  gem "rspec-rails", "~> 3.4.2"
+  gem "rspec-rails", "~> 3.5.0"
 end
 
 group :test do

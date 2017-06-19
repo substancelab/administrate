@@ -6,6 +6,8 @@ de:
       destroy: Löschen
       edit: Editieren
       show: Anzeigen
+      new: Neu
+      back: Zurück
     controller:
       create:
         success: "%{resource} wurde erfolgreich erstellt."
@@ -23,3 +25,6 @@ de:
         not_supported: HasOne Beziehungen werden nicht unterstützt.
     scopes:
       scopes: Filter
+    search:
+      clear: Saubere Suche
+      label: Suche %{resource}

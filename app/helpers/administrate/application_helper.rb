@@ -1,5 +1,7 @@
 module Administrate
   module ApplicationHelper
+    PLURAL_MANY_COUNT = 2.1
+
     def render_field(field, locals = {})
       locals.merge!(field: field)
       render locals: locals, partial: field.to_partial_path
@@ -12,28 +14,21 @@ module Administrate
         constantize.
         model_name.
         human(
-          count: 0,
+          count: PLURAL_MANY_COUNT,
           default: resource_name.to_s.pluralize.titleize,
         )
     end
 
-    def svg_tag(asset, svg_id, options = {})
-      svg_attributes = {
-        "xlink:href".freeze => "#{asset_url(asset)}##{svg_id}",
-        height: options[:height],
-        width: options[:width],
-      }.delete_if { |_key, value| value.nil? }
-      xml_attributes = {
-        "xmlns".freeze => "http://www.w3.org/2000/svg".freeze,
-        "xmlns:xlink".freeze => "http://www.w3.org/1999/xlink".freeze,
-      }
-
-      content_tag :svg, xml_attributes do
-        content_tag :use, nil, svg_attributes
+    def sort_order(order)
+      case order
+      when "asc" then "ascending"
+      when "desc" then "descending"
+      else "none"
       end
     end
 
     SCOPES_LOCALE_SCOPE = [:administrate, :scopes].freeze
+
     # #translated_scope(key, resource_name): Retries the translation in the
     # root scope ('administrate.scopes') as fallback if translation for that
     # specific model doesn't exist. For example, calling *translated_scope
@@ -56,6 +51,14 @@ module Administrate
       I18n.t key,
              scope: SCOPES_LOCALE_SCOPE + [resource_name],
              default: I18n.t(key, scope: SCOPES_LOCALE_SCOPE)
+    end
+
+    def sanitized_order_params
+      params.permit(:search, :id, :order, :page, :per_page, :direction, :orders)
+    end
+
+    def clear_search_params
+      params.except(:search, :page).permit(:order, :direction, :per_page)
     end
   end
 end

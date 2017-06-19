@@ -6,6 +6,8 @@ sv:
       destroy: Ta bort
       edit: Ändra
       show: Visa
+      new: Ny
+      back: Tillbaka
     controller:
       create:
         success: "%{resource} har skapats."
@@ -23,3 +25,6 @@ sv:
         not_supported: Formulär med HasOne relationer stöds inte.
     scopes:
       scopes: Filter
+    search:
+      clear: Rensa sökningen
+      label: Sök %{resource}

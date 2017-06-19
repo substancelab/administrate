@@ -1,6 +1,6 @@
 # Administrate
 
-[![Circle CI](https://img.shields.io/circleci/project/thoughtbot/administrate/master.svg)](https://circleci.com/gh/thoughtbot/administrate/tree/master)
+[![CircleCI](https://img.shields.io/circleci/project/github/thoughtbot/administrate.svg)](https://circleci.com/gh/thoughtbot/administrate/tree/master)
 [![Gem Version](https://badge.fury.io/rb/administrate.svg)](https://badge.fury.io/rb/administrate)
 [![Code Climate](https://codeclimate.com/github/thoughtbot/administrate/badges/gpa.svg)](https://codeclimate.com/github/thoughtbot/administrate)
 
@@ -15,7 +15,7 @@ Check the [release notes] for important updates.
 
 [release notes]: https://github.com/thoughtbot/administrate/releases
 
-![administrate](https://images.thoughtbot.com/announcing-administrate/DdP2CQfnSE23PI8AAnDc_Administrate.png)
+![administrate](https://cloud.githubusercontent.com/assets/903327/25823003/a5cc6aee-3408-11e7-8bcb-c62bb7addf40.png)
 
 ## What Is Administrate?
 
@@ -42,11 +42,12 @@ To accomplish these goals, Administrate follows a few guiding principles:
 
 ## Getting Started
 
+Administrate supports Rails from 4.2, up to 5.0 and beyond.
+
 Add Administrate to your Gemfile:
 
 ```ruby
-# Gemfile
-gem "administrate", "~> 0.2.0"
+gem "administrate"
 ```
 
 Re-bundle, then run the installer:
@@ -58,8 +59,22 @@ $ rails generate administrate:install
 Restart your server, and visit http://localhost:3000/admin
 to see your new dashboard in action.
 
+## Create Additional Dashboards
+
+In order to create additional dashboards, pass in the resource name to 
+the dashboard generator. A dashboard and controller will be created.
+
+```bash
+$ rails generate administrate:dashboard Foo
+```
+
+## Documentation
+
 To customize the appearance, behavior, and contents of the dashboard,
-see the guides at http://administrate-docs.herokuapp.com.
+see the guides at
+[https://administrate-prototype.herokuapp.com][prototype_heroku].
+These guides are available as markdown files in the `docs` subdirectory of the
+git repository, too.
 
 ## Repository Structure
 
@@ -69,6 +84,9 @@ The demo app is [hosted publicly on Heroku][demo].
 
 - The gem's source code lives in the `app` and `lib` subdirectories.
 - The demo app is nested within `spec/example_app`.
+- The guides as seen at
+  [https://administrate-prototype.herokuapp.com][prototype_heroku] live as
+  markdown files in the `docs` subdirectory.
 
 Rails configuration files have been changed
 to recognize the app in the new location,
@@ -80,13 +98,51 @@ With this structure, developing a typical feature looks like:
 - Implement a feature in `administrate/`
 - Exercise the feature using the demo rails app (`spec/example_app/app/`)
 
-## Contributing Guidelines
+## Front-end Architecture
 
-Use the following guides for getting things done, programming well, and
-programming in style.
+This project uses:
 
-* [Protocol](http://github.com/thoughtbot/guides/blob/master/protocol)
-* [Best Practices](http://github.com/thoughtbot/guides/blob/master/best-practices)
-* [Style](http://github.com/thoughtbot/guides/blob/master/style)
+- Sass
+- [BEM]-style CSS selectors, with [namespaces]
+- Autoprefixer
+- SCSS-Lint, with [Hound] ([configuration](.scss-lint.yml))
+- A variety of CSS units:
+  - `em` for typographical-related elements
+  - `rem` for lengths related to components
+  - `px` for borders, text shadows, etc.
+  - `vw`/`vh` for lengths that should be relational to the viewport
+
+[BEM]: http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/
+[namespaces]: http://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/
+[Hound]: https://houndci.com/
+
+## Contributing
+
+Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
+
+administrate was originally written by Grayson Wright and is now maintained by
+Nick Charlton. Many improvements and bugfixes were contributed by the [open
+source
+community](https://github.com/thoughtbot/administrate/graphs/contributors).
+
+## License
+
+administrate is Copyright © 2015-2017 thoughtbot.
+It is free software, and may be redistributed under the terms specified in the
+[LICENSE](/LICENSE.md) file.
+
+## About thoughtbot
+
+![thoughtbot](http://presskit.thoughtbot.com/images/thoughtbot-logo-for-readmes.svg)
+
+administrate is maintained and funded by thoughtbot, inc.
+The names and logos for thoughtbot are trademarks of thoughtbot, inc.
+
+We love open source software!
+See [our other projects][community] or
+[hire us][hire] to design, develop, and grow your product.
 
 [demo]: https://administrate-prototype.herokuapp.com/admin
+[prototype_heroku]: https://administrate-prototype.herokuapp.com
+[community]: https://thoughtbot.com/community?utm_source=github
+[hire]: https://thoughtbot.com?utm_source=github

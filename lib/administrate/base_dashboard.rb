@@ -4,7 +4,6 @@ require "administrate/field/date_time"
 require "administrate/field/email"
 require "administrate/field/has_many"
 require "administrate/field/has_one"
-require "administrate/field/image"
 require "administrate/field/number"
 require "administrate/field/polymorphic"
 require "administrate/field/select"
@@ -59,6 +58,17 @@ module Administrate
 
     def display_resource(resource)
       "#{resource.class} ##{resource.id}"
+    end
+
+    def association_includes
+      association_classes = [Field::HasMany, Field::HasOne, Field::BelongsTo]
+
+      collection_attributes.map do |key|
+        field = self.class::ATTRIBUTE_TYPES[key]
+
+        next key if association_classes.include?(field)
+        key if association_classes.include?(field.try :deferred_class)
+      end.compact
     end
 
     private

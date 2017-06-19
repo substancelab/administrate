@@ -1,5 +1,6 @@
 require_relative "associative"
 require "administrate/page/collection"
+require "administrate/order"
 
 module Administrate
   module Field
@@ -20,12 +21,12 @@ module Administrate
 
       def associated_resource_options
         candidate_resources.map do |resource|
-          [display_candidate_resource(resource), resource.id]
+          [display_candidate_resource(resource), resource.send(primary_key)]
         end
       end
 
       def selected_options
-        data && data.map(&:id)
+        data && data.map { |object| object.send(primary_key) }
       end
 
       def limit
@@ -36,22 +37,44 @@ module Administrate
         self.class.permitted_attribute(attribute)
       end
 
-      def resources
-        data.limit(limit)
+      def resources(page = 1)
+        resources = order.apply(data).page(page).per(limit)
+        includes.any? ? resources.includes(*includes) : resources
       end
 
       def more_than_limit?
-        data.count > limit
+        data.count(:all) > limit
       end
 
       private
 
+      def includes
+        associated_dashboard.association_includes
+      end
+
       def candidate_resources
-        associated_class.all
+        if options.key?(:includes)
+          includes = options.fetch(:includes)
+          associated_class.includes(*includes).all
+        else
+          associated_class.all
+        end
       end
 
       def display_candidate_resource(resource)
         associated_dashboard.display_resource(resource)
+      end
+
+      def order
+        @_order ||= Administrate::Order.new(sort_by, direction)
+      end
+
+      def sort_by
+        options[:sort_by]
+      end
+
+      def direction
+        options[:direction]
       end
     end
   end
