@@ -69,7 +69,7 @@ module Administrate
     end
 
     def search_terms
-      ["%#{words.join.downcase}%"] * search_attributes.count
+      ["%#{term.mb_chars.downcase}%"] * search_attributes.count
     end
 
     def search_attributes
