@@ -83,7 +83,7 @@ feature "Search" do
     fill_in :search, with: query
     page.execute_script("$('.search').submit()")
 
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(subscribed_matched.name)
     end
     expect(page).not_to have_content(subscribed_unmathed.name)
@@ -116,7 +116,7 @@ feature "Search" do
     fill_in :search, with: query
     page.execute_script("$('.search').submit()")
 
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(subscribed_and_old_match.name)
     end
     expect(page).not_to have_content(subscribed_unmathed.name)
@@ -139,7 +139,7 @@ feature "Search" do
     # Included into the COLLECTION_SCOPES array of the CustomersDashboard
     click_on "subscribed"
 
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(subscribed.name)
     end
     expect(page).not_to have_content(unsubscribed.name)
@@ -156,7 +156,7 @@ feature "Search" do
     # Included into the COLLECTION_SCOPES hash of the OrdersDashboard
     click_on "zip_prefix(00000)"
 
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(searched.id)
       expect(page).to have_content(searched.customer.name)
     end
@@ -177,7 +177,7 @@ feature "Search" do
     fill_in :search, with: query
     page.execute_script("$('.search').submit()")
 
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(match.name)
     end
     expect(page).not_to have_content(unmatch.name)
@@ -195,7 +195,7 @@ feature "Search" do
     visit admin_customers_path
     fill_in :search, with: query
     page.execute_script("$('.search').submit()")
-    page.within("tr.table__row", match: :first) do
+    page.within("tr.js-table-row", match: :first) do
       expect(page).to have_content(match.name)
     end
     expect(page).not_to have_content(unmatch.name)
