@@ -15,6 +15,7 @@ module Administrate
       render locals: {
         resources: resources,
         page: page,
+        search_term: search.term,
         show_search_bar: show_search_bar?
       }
     end
