@@ -1,18 +1,16 @@
-<div class="buttons-group">
+<section class="main-content__body">
   <%= translated_scope scope_buttons_group, page.resource_name %>:
-  <div class="button-group">
-    <% page.scope_names(scope_buttons_group).each do |scope| %>
+
+  <% page.scope_names(scope_buttons_group).each do |scope| %>
     <label>
       <% if page.scoped_with?(scope) %>
-        <%= link_to translated_scope(scope, page.resource_name), 
+        <%= link_to translated_scope(scope, page.resource_name),
                     { search: page.term_without_scope(scope) },
-                    class: "button-group-item active" %>
+                    class: "active" %>
       <% else %>
-        <%= link_to translated_scope(scope, page.resource_name), 
-                    { search: page.term_with_scope(scope) },
-                    class: "button-group-item" %>
+        <%= link_to translated_scope(scope, page.resource_name),
+                    { search: page.term_with_scope(scope) } %>
       <% end %>
     </label>
-    <% end %>
-  </div>
-</div>
+  <% end %>
+</section>
