@@ -3,9 +3,6 @@ require "active_support/core_ext/object/blank"
 
 module Administrate
   class Search
-    # Only used if dashboard's COLLECTION_SCOPES is not defined
-    BLACKLISTED_WORDS = %w{destroy remove delete update create}.freeze
-
     attr_reader :resolver, :term, :words
 
     def initialize(resolver, term)
@@ -111,17 +108,12 @@ module Administrate
 
     # If the COLLECTION_SCOPES is not empty returns true if the possible_scope
     # is included in it (i.e. whitelisted), and returns false if is empty.
-    # If COLLECTION_SCOPES isn't defined returns true if it's not blacklisted
-    # nor ending with an exclamation mark.
     def valid_scope?(scope_obj)
       if collection_scopes.any?
         collection_scopes_include?(scope_obj.user_input) ||
           wildcarded_scope?(scope_obj.name)
-      elsif dashboard_class.const_defined?(:COLLECTION_SCOPES)
-        false
       else
-        !banged?(scope_obj.user_input) &&
-          !blacklisted_scope?(scope_obj.user_input)
+        false
       end
     end
 
@@ -131,17 +123,6 @@ module Administrate
 
     def wildcarded_scope?(scope)
       collection_scopes.include?("#{scope}:*")
-    end
-
-    def banged?(method)
-      method[-1, 1] == "!"
-    end
-
-    def blacklisted_scope?(scope)
-      BLACKLISTED_WORDS.each do |word|
-        return true if scope =~ /.*#{word}.*/i
-      end
-      false
     end
 
     def collection_scopes

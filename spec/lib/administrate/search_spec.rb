@@ -150,34 +150,6 @@ describe Administrate::Search do
         end
       end
 
-      it "returns nil if the name of the scope looks suspicious" do
-        begin
-          class User
-            def self.destroy_all; end
-          end
-
-          Administrate::Search::BLACKLISTED_WORDS.each do |word|
-            search = Administrate::Search.new(resolver, "scope:#{word}_all")
-            expect(search.scope).to eq(nil)
-          end
-        ensure
-          remove_constants :User
-        end
-      end
-
-      it "returns nil if the name of the scope ends with an exclamation mark" do
-        begin
-          class User
-            def self.bang!; end
-          end
-
-          search = Administrate::Search.new(resolver, "scope:bang!")
-          expect(search.scope).to eq(nil)
-        ensure
-          remove_constants :User
-        end
-      end
-
       describe "with COLLECTION_SCOPES defined as an array" do
         let(:resolver) do
           double(resource_class: User,
