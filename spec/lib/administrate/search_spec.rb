@@ -1,5 +1,8 @@
 require "rails_helper"
+require "spec_helper"
+require "support/constant_helpers"
 require "administrate/field/belongs_to"
+require "administrate/field/string"
 require "administrate/field/email"
 require "administrate/field/has_many"
 require "administrate/field/has_one"
