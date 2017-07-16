@@ -33,9 +33,7 @@ module Administrate
       if query.blank?
         @scoped_resource.all
       else
-        results = @scoped_resource.
-          joins(tables_to_join).
-          where(query_template, *query_values)
+        results = search_results(@scoped_resource)
         results = filter_results(results)
         results
       end
@@ -43,8 +41,8 @@ module Administrate
 
     private
 
-    def filter_results(results)
-      results
+    def filter_results(resources)
+      resources
     end
 
     def query_template
@@ -64,6 +62,12 @@ module Administrate
       attribute_types.keys.select do |attribute|
         attribute_types[attribute].searchable?
       end
+    end
+
+    def search_results(resources)
+      resources.
+        joins(tables_to_join).
+        where(query_template, *query_values)
     end
 
     def attribute_types
