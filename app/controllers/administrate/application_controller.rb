@@ -3,6 +3,9 @@ module Administrate
     protect_from_forgery with: :exception
 
     def index
+      dashboard_collection_filter = \
+        Administrate::Dashboard::CollectionFilters.new(dashboard_class)
+      valid_filters = dashboard_collection_filter.filter_keys
       search_term = params[:search].to_s.strip
       resources = Administrate::Search.new(scoped_resource,
                                            dashboard_class,
@@ -16,7 +19,8 @@ module Administrate
         resources: resources,
         search_term: search_term,
         page: page,
-        show_search_bar: show_search_bar?,
+        collection_filters: valid_filters,
+        show_search_bar: show_search_bar?
       }
     end
 
